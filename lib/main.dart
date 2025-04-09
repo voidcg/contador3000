@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Função principal que inicia o app
 void main() {
   runApp(const Contador3000App());
 }
@@ -10,15 +11,14 @@ class Contador3000App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Contador 3000',
-      debugShowCheckedModeBanner: false, // Remove a faixa de debug
-      home: const HomeScreen(), // Chama a tela inicial
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false, // Remove o banner "debug" do canto
+      home: HomeScreen(), // Define a tela inicial
     );
   }
 }
 
-// Tela inicial com estado (contador muda)
+// Tela inicial com estado (para mudar tema e contador)
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -27,100 +27,127 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int vontade = 0; // Variável que guarda o valor da vontade
+  int vontade = 0; // Contador de vontade de jogar
+  bool isDarkMode = true; // Define se o app está no modo escuro
 
-  // Função que incrementa a vontade
+  // Aumenta o contador
   void aumentarVontade() {
     setState(() {
       vontade++;
     });
   }
 
-  // Função que zera a vontade
+  // Zera o contador
   void zerarVontade() {
     setState(() {
       vontade = 0;
     });
   }
 
+  // Alterna entre modo claro e escuro
+  void alternarTema() {
+    setState(() {
+      isDarkMode = !isDarkMode;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Cores de fundo e texto dependendo do tema atual
+    final backgroundColor = isDarkMode ? const Color(0xFF121212) : Colors.white;
+    final textColor = isDarkMode ? Colors.white : Colors.black;
+    final zerarButtonColor = isDarkMode ? Colors.white : Colors.black;
+    final zerarTextColor = isDarkMode ? Colors.black : Colors.white;
+    final emoji = isDarkMode ? '🌙' : '☀️'; // Emoji que aparece no botão de alternar
+
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 0, 31, 62), // Fundo azul escuro
-      body: Stack(
-        children: [
-          // Conteúdo central da tela
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  '🎮', // Emoji de controle
-                  style: TextStyle(fontSize: 60),
+      backgroundColor: backgroundColor,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            // Botão de alternância (modo claro/escuro) no canto superior esquerdo
+            Positioned(
+              top: 16,
+              left: 16,
+              child: IconButton(
+                icon: Text(
+                  emoji,
+                  style: const TextStyle(fontSize: 28),
                 ),
-                const SizedBox(height: 16), // Espaço entre os elementos
-                const Text(
-                  'Toque no botão para aumentar a sua vontade de jogar',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white, // Texto branco
-                    fontSize: 18,
+                onPressed: alternarTema,
+              ),
+            ),
+            // Conteúdo principal centralizado
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    '🎮', // Emoji central do controle
+                    style: TextStyle(fontSize: 60),
                   ),
-                ),
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: aumentarVontade, // Chama a função ao clicar
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red, // Botão vermelho
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 32,
-                      vertical: 16,
-                    ),
-                  ),
-                  child: const Text(
-                    'Botão',
+                  const SizedBox(height: 16),
+                  // Texto de instrução
+                  Text(
+                    'Toque no botão para aumentar a sua vontade de jogar',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.white, // Texto branco
+                      color: textColor,
                       fontSize: 18,
                     ),
                   ),
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  'Você está com $vontade x de vontade de jogar',
-                  style: const TextStyle(
-                    color: Colors.white, // Texto branco
-                    fontSize: 16,
+                  const SizedBox(height: 24),
+                  // Botão para aumentar o contador
+                  ElevatedButton(
+                    onPressed: aumentarVontade,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    ),
+                    child: const Text(
+                      'Botão',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 24),
+                  // Texto que mostra o valor atual do contador
+                  Text(
+                    'Você está com $vontade x de vontade de jogar',
+                    style: TextStyle(
+                      color: textColor,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          // Botão "Zerar" fixado na parte inferior central
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 32),
-              child: ElevatedButton(
-                onPressed: zerarVontade, // Chama a função ao clicar
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white, // Cor branca
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 12,
+            // Botão de zerar na parte inferior central da tela
+            Positioned(
+              bottom: 24,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: zerarVontade,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: zerarButtonColor,
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   ),
-                ),
-                child: const Text(
-                  'Zerar',
-                  style: TextStyle(
-                    color: Colors.black, // Texto preto
-                    fontSize: 16,
+                  child: Text(
+                    'Zerar',
+                    style: TextStyle(
+                      color: zerarTextColor,
+                      fontSize: 16,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
