@@ -1,16 +1,3 @@
 # contador3000
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Um app simples feito em Flutter que mede o seu nível de vontade de jogar (por enquanto...) Toque no botão vermelho para aumentar o contador, quanto mais você toca, mais vontade de jogar você tem. 🎮
